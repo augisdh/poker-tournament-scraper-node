@@ -7,7 +7,6 @@ const puppeteer = require('puppeteer');
   const nameInput = '#UserName';
   const passInput = '#Password';
   const btnLogIn = 'input[type="submit"]';
-
   // PokerProLabs logIn details
   const nameLogin = 'name';
   const passLogin = 'pass';
@@ -35,7 +34,6 @@ const puppeteer = require('puppeteer');
 
     // Write regex to find values without $ symbol and push to array
     const regex = "?";
-    
     for(let i in prizes){
       let value = prizes[i].match(regex);
       totalCashes.push(value);
@@ -43,7 +41,6 @@ const puppeteer = require('puppeteer');
     // 
 
     totalWinnings = totalCashes.reduce((acc, val) => acc + val, 0);
-
     return totalCashes;
   }
 
