@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>T-results SCRAPER</title>
+    <link rel="shortcut icon" href="images/spade.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+<body>
+    
+    <main class="main-wrapper">
+        <div class="main-box">
+            <div class="introduction">
+                <h2>PokerProLabs Tournament Result SCRAPER</h2>
+                <p>Make sure you type correct and full title of the tournament. Show current year results.</p>
+            </div>
+            <div class="search">
+                <input class="player-name" name="player" type="text" placeholder="Enter Player Name">
+                <input class="tournament-name" type="text" placeholder="Enter Full Tournament Title">
+                <button class="search-btn" type="button">LOOK UP</button>
+            </div>
+            <!-- Dummy table bellow -->
+            <table class="results">
+                <thead>
+                    <tr>
+                        <th>Player name</th>
+                        <th>Tournament name</th>
+                        <th>Total games played</th>
+                        <th>ITM %</th>
+                        <th>Total money won</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>augustas789</td>
+                        <td>$1.00 NL Hold'em [180 Players]</td>
+                        <td>191</td>
+                        <td>25</td>
+                        <td class="green">$9999</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--  -->
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
