@@ -7,11 +7,8 @@ const puppeteer = require('puppeteer');
   const nameInput = '#UserName';
   const passInput = '#Password';
   const btnLogIn = 'input[type="submit"]';
-<<<<<<< HEAD
   const tournamentName = "Tournament NAME";
 
-=======
->>>>>>> 6cac7a300705bd48dcf2eb19a0b2ce6965a4fd82
   // PokerProLabs logIn details
   const nameLogin = 'username';
   const passLogin = 'password';
@@ -37,7 +34,6 @@ const puppeteer = require('puppeteer');
           map(money => Number(money.children[4].innerText.replace('$', ''))).
             reduce((a, b) => a + b, 0);
 
-<<<<<<< HEAD
     }, tournamentName);
 
     await a();
@@ -60,5 +56,4 @@ const puppeteer = require('puppeteer');
   console.log(run)
 
   await page.close();
-})();
 })();
