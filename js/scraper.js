@@ -3,14 +3,15 @@ const puppeteer = require('puppeteer');
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  const url = 'http://pokerprolabs.com/PSuserNameHERE/pokerstars/2018/any';
+  const url = 'http://pokerprolabs.com/pokerstarsID/pokerstars/2018/any';
   const nameInput = '#UserName';
   const passInput = '#Password';
   const btnLogIn = 'input[type="submit"]';
+  const tournamentName = "Tournament NAME";
 
   // PokerProLabs logIn details
-  const nameLogin = 'name';
-  const passLogin = 'pass';
+  const nameLogin = 'username';
+  const passLogin = 'password';
   // 
 
   await page.goto(url);
@@ -22,29 +23,33 @@ const puppeteer = require('puppeteer');
   await page.keyboard.type(passLogin);
 
   await page.click(btnLogIn);
-  
   await page.waitForNavigation();
 
-  let extractWinnings = async () => {
-    let totalCashes = [];
+  const extractWinnings = async () => {
+    await page.screenshot({path:`1.png`});
 
-    let prizes = await page.evaluate(() => 
-      Array.from(document.querySelectorAll("tbody#body tr")).
-      map(tournament => tournament.children[4].innerText.trim())
-    );
+    const prizes = await page.evaluate((tournamentName) => {
+      return Array.from(document.querySelectorAll("tbody#body tr")).
+        filter(tournament => tournament.innerText.includes(tournamentName)).
+          map(money => Number(money.children[4].innerText.replace('$', ''))).
+            reduce((a, b) => a + b, 0);
 
-    // Write regex to find values without $ symbol and push to array
-    const regex = "?";
-    
-    for(let i in prizes){
-      let value = prizes[i].match(regex);
-      totalCashes.push(value);
+    }, tournamentName);
+
+    await a();
+    return prizes;
+  }
+
+  const a = async () => {
+    const nextPageIsDisabled = await page.evaluate(() => document.querySelector("#next").classList.contains("ui-state-disabled"));
+        
+    if(nextPageIsDisabled){
+      return "All done";
+    } else {
+      await page.click("#next");
+      await page.waitFor(2*1000);
+      await extractWinnings();
     }
-    // 
-
-    totalWinnings = totalCashes.reduce((acc, val) => acc + val, 0);
-
-    return totalCashes;
   }
 
   const run = await extractWinnings();
