@@ -54,18 +54,6 @@ const puppeteer = require('puppeteer');
       await page.waitFor(2*1000);
       await extractWinnings();
     }
-=======
-    // Write regex to find values without $ symbol and push to array
-    const regex = "?";
-    for(let i in prizes){
-      let value = prizes[i].match(regex);
-      totalCashes.push(value);
-    }
-    // 
-
-    totalWinnings = totalCashes.reduce((acc, val) => acc + val, 0);
-    return totalCashes;
->>>>>>> 6cac7a300705bd48dcf2eb19a0b2ce6965a4fd82
   }
 
   const run = await extractWinnings();
