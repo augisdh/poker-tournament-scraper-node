@@ -3,11 +3,12 @@ const puppeteer = require('puppeteer');
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  const url = 'http://pokerprolabs.com/pokerstarsID/pokerstars/2018/any';
+  const url = 'http://pokerprolabs.com/playerToSearth/pokerstars/2018/any';
   const nameInput = '#UserName';
   const passInput = '#Password';
   const btnLogIn = 'input[type="submit"]';
-  const tournamentName = "Tournament NAME";
+  const tournamentName = "$1.00 NL Hold'em [180 Players]";
+  const totalCashes = [];
 
   // PokerProLabs logIn details
   const nameLogin = 'username';
@@ -25,31 +26,41 @@ const puppeteer = require('puppeteer');
   await page.click(btnLogIn);
   await page.waitForNavigation();
 
+  const makePageCountMax = async () => {
+    await page.evaluate(() => document.getElementById("pageCount").selectedIndex = 3);
+    await page.click("#next");
+    await page.click("#prev");
+  }
+
+  makePageCountMax();
+  await page.waitFor(2*1000);
+
   const extractWinnings = async () => {
     await page.screenshot({path:`1.png`});
 
-    const prizes = await page.evaluate((tournamentName) => {
-      return Array.from(document.querySelectorAll("tbody#body tr")).
+    const prizes = await page.evaluate((tournamentName, totalCashes) => {
+      const onePageCashes =  Array.from(document.querySelectorAll("tbody#body tr")).
         filter(tournament => tournament.innerText.includes(tournamentName)).
           map(money => Number(money.children[4].innerText.replace('$', ''))).
-            reduce((a, b) => a + b, 0);
+            reduce((acc, val) => acc + val, 0);
 
-    }, tournamentName);
+      totalCashes.push(onePageCashes.toFixed(2));
+      return totalCashes;
+    }, tournamentName, totalCashes);
 
-    await a();
-    return prizes;
+    const nextPageIsDisabled = await page.evaluate(() => document.querySelector("#next").classList.contains("ui-state-disabled"));
+
+    if(!nextPageIsDisabled){
+      await a();
+    } else {
+      console.log("All done");
+    }
   }
 
   const a = async () => {
-    const nextPageIsDisabled = await page.evaluate(() => document.querySelector("#next").classList.contains("ui-state-disabled"));
-        
-    if(nextPageIsDisabled){
-      return "All done";
-    } else {
-      await page.click("#next");
-      await page.waitFor(2*1000);
-      await extractWinnings();
-    }
+    await page.click("#next");
+    await page.waitFor(2*1000);
+    await extractWinnings();
   }
 
   const run = await extractWinnings();
