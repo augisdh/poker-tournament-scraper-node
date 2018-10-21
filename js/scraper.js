@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  const url = 'http://pokerprolabs.com/playerToSearth/pokerstars/2018/any';
+  const url = 'http://pokerprolabs.com/playerToSearch/pokerstars/2018/any';
   const nameInput = '#UserName';
   const passInput = '#Password';
   const btnLogIn = 'input[type="submit"]';
