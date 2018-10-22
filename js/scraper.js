@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer');
   const nameInput = '#UserName';
   const passInput = '#Password';
   const btnLogIn = 'input[type="submit"]';
-  const tournamentName = "$1.00 NL Hold'em [180 Players]";
+  const tournamentName = "Full tournament name";
 
   // PokerProLabs logIn details
   const nameLogin = 'username';
