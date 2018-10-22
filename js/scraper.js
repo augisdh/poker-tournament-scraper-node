@@ -31,7 +31,7 @@ const puppeteer = require('puppeteer');
     await page.click("#first");
   }
 
-  makePageCountMax();
+  await makePageCountMax();
   await page.waitFor(2*1000);
 
   const extractWinnings = async () => {
