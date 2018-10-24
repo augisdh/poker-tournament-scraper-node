@@ -49,10 +49,10 @@ const fs = require('fs');
 
     if(!nextPageIsDisabled){
       await goToNextPage();
-      prizesArray.push(prizes);
+      if(prizes.length !== 0){prizesArray.push(prizes)}
       await extractWinnings();
     } else {
-      prizesArray.push(prizes);
+      if(prizes.length !== 0){prizesArray.push(prizes)}
       const prizesJSON = JSON.stringify(prizesArray, null, 2);
       fs.writeFile('json/data.json', prizesJSON, (err) => {(err) ? console.log(`Something went wrong! ${err}`) : console.log("All prizes were saved!")});
     }
