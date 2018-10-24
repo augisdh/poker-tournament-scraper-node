@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 
 (async () => {
   const browser = await puppeteer.launch();
@@ -7,7 +8,8 @@ const puppeteer = require('puppeteer');
   const nameInput = '#UserName';
   const passInput = '#Password';
   const btnLogIn = 'input[type="submit"]';
-  const tournamentName = "Full tournament name";
+  const tournamentName = "$1.00 NL Hold'em [180 Players]";
+  let prizesArray = [];
 
   // PokerProLabs logIn details
   const nameLogin = 'username';
@@ -31,7 +33,7 @@ const puppeteer = require('puppeteer');
     await page.click("#first");
   }
 
-  makePageCountMax();
+  await makePageCountMax();
   await page.waitFor(2*1000);
 
   const extractWinnings = async () => {
@@ -40,16 +42,19 @@ const puppeteer = require('puppeteer');
     const prizes = await page.evaluate((tournamentName) => {
       return Array.from(document.querySelectorAll("tbody#body tr")).
         filter(tournament => tournament.innerText.includes(tournamentName)).
-          map(money => Number(money.children[4].innerText.replace('$', '')))
-    }, tournamentName)
+          map(money => Number(money.children[4].innerText.replace('$', '')));
+    }, tournamentName);
 
     const nextPageIsDisabled = await page.evaluate(() => document.querySelector("#next").classList.contains("ui-state-disabled"));
 
     if(!nextPageIsDisabled){
       await goToNextPage();
-      return prizes.concat(await extractWinnings());
+      prizesArray.push(prizes);
+      await extractWinnings();
     } else {
-      return prizes;
+      prizesArray.push(prizes);
+      const prizesJSON = JSON.stringify(prizesArray, null, 2);
+      fs.writeFile('json/data.json', prizesJSON, (err) => {(err) ? console.log(`Something went wrong! ${err}`) : console.log("All prizes were saved!")});
     }
   }
 
@@ -58,8 +63,7 @@ const puppeteer = require('puppeteer');
     await page.waitFor(2*1000);
   }
 
-  const run = await extractWinnings();
-  console.log(run)
+  await extractWinnings();
 
   await page.close();
 })();
